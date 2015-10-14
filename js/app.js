@@ -68,7 +68,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-
+  .state('tab.market', {
+      url: '/market',
+      views: {
+        'marketView': {
+          templateUrl: 'templates/marketView.html',
+          controller: 'marketController'
+        }
+      }
+    })
   .state('tab.test', {
     url: '/test',
     views: {

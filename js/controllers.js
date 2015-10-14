@@ -21,9 +21,80 @@ angular.module('starter.controllers', [])
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller("testController",function($scope){
-  $scope.items=["World","WORLD"];
+.controller("marketController",function($scope,$ionicPopup,$ionicSideMenuDelegate,Items,Categories,Cart){
 
+
+  $scope.cart=[];
+  $scope.categories=Categories.all();
+  $scope.showCategory;
+  $scope.items=Items.getForCategory($scope.showCategory);
+  $scope.quantity=0;
+  $scope.setCategory=function(id){
+    console.log(id);
+    $scope.showCategory=id;
+    $scope.items=Items.getForCategory($scope.showCategory);
+  }
+  $scope.getCategory=function(id){
+    return Categories.get(id);
+  }
+  $scope.addToCart=function(id,qty){
+    var canAdd=true;
+    $scope.cart.forEach(function(item){
+      if(item==id)
+      canAdd=false;
+    })
+    if(canAdd)
+    $scope.cart.push(id);
+    Cart.add(id,qty);
+    console.log(Cart.all());
+  }
+
+  $scope.showPopup = function() {
+    $scope.quantity=undefined;
+  var myPopup = $ionicPopup.show({
+    title: 'Enter quantity',
+    subTitle: 'Please enter quantity',
+    scope: $scope,
+    template: '<input type="text" ng-model="quantity"></input>',
+    buttons: [
+      { text: 'Cancel',
+        onTap:function(e){
+          this.close();
+        }
+      },
+      {
+        text: '<b>Save</b>',
+        type: 'button-positive',
+        onTap: function(e) {
+          console.log($scope.quantity)
+          if (!$scope.quantity) {
+            //don't allow the user to close unless he enters wifi password
+            e.preventDefault();
+          } else {
+            //return $scope.quantity;
+            this.close();
+          }
+        }
+      }
+    ]
+  });
+  myPopup.then(function(res) {
+   console.log('Tapped!', res);
+   Cart.add(id,1);
+   console.log(Cart.all());
+ });
+ }
+
+  $scope.toggleLeftSideMenu = function() {
+    $ionicSideMenuDelegate.toggleLeft();
+  };
+})
+
+.controller("testController",function($scope,$ionicSideMenuDelegate){
+  $scope.items=["World","WORLD"];
+  $scope.toggleLeftSideMenu = function() {
+    $ionicSideMenuDelegate.toggleLeft();
+  };
 })
 
 .controller('AccountCtrl', function($scope) {

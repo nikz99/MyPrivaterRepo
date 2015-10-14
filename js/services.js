@@ -1,4 +1,125 @@
 angular.module('starter.services', [])
+.factory("Cart",function(){
+  var cart=[];
+  return{
+    all:function(){
+      return cart;
+    },
+    add:function(itemId,qty){
+      var canAdd=true;
+      cart.forEach(function(cartItem){
+        if(cartItem.item==itemId)
+        canAdd=false;
+      })
+      if(!canAdd)
+      return;
+      var obj={item:itemId,quantity:qty};
+      cart.push(obj);
+    },
+    remove:function(id){
+      cart.splice(cart.indexOf(id), 1);
+    }
+  }
+})
+.factory('Categories', function() {
+  // Might use a resource here that returns a JSON array
+  // Some fake testing data
+  var categories = [{
+    id: 0,
+    name: 'Groceries'
+  },{
+    id: 1,
+    name: 'Kitchen'
+  },{
+    id: 2,
+    name: 'Others'
+  }];
+
+  return {
+    all: function() {
+      return categories;
+    },
+    remove: function(category) {
+      categories.splice(chats.indexOf(category), 1);
+    },
+    get: function(categoryId) {
+      for (var i = 0; i < categories.length; i++) {
+        if (categories[i].id === parseInt(categoryId)) {
+          return categories[i];
+        }
+      }
+      return null;
+    }
+  };
+
+})
+  // Some fake testing data
+.factory('Items', function() {
+  var items = [{
+    id: 0,
+    name: 'Onion',
+    category:0,
+    image: 'img/onion.png'
+  },{
+    id: 1,
+    name: 'Eggs',
+    category:0,
+    image: 'img/eggs.png'
+  },{
+    id: 2,
+    name: 'Milk',
+    category:0,
+    image: 'img/milk.png'
+  },{
+    id: 3,
+    name: 'Scrub',
+    category:1,
+    image: 'img/scrub.png'
+  },{
+    id: 4,
+    name: 'Soap',
+    category:1,
+    image: 'img/soap.png'
+  },{
+    id: 5,
+    name: 'Paper Glass',
+    category:2,
+    image: 'img/paperGlass.png'
+  },{
+    id: 6,
+    name: 'Bottle',
+    category:2,
+    image: 'img/waterbottle.png'
+  }];
+
+  return {
+    all: function() {
+      return items;
+    },
+    remove: function(item) {
+      items.splice(chats.indexOf(item), 1);
+    },
+    getForCategory:function(categoryId){
+      if(categoryId==undefined)
+      return items;
+      var resultSet=[];
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].category === parseInt(categoryId)) {
+          resultSet.push(items[i]);
+        }
+      }
+      return resultSet;
+    },
+    get: function(itemId) {
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].id === parseInt(itemId)) {
+          return items[i];
+        }
+      }
+      return null;
+    }
+  };
+})
 
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
